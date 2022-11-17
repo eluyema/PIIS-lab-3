@@ -4,7 +4,7 @@ from algorithm import Negamax, Negascout, PVS
 class Game:
     def __init__(self, board: chess.Board, method):
         self.board = board
-        self.basicDepth = 4
+        self.basicDepth = 3
         self.method = method
     
     def _moveUser(self):

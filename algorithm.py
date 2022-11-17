@@ -124,7 +124,7 @@ def evaluate(board):
 def Negamax(board, depth):
         if depth == 0:
             return evaluate(board), None
-        bestScore = float('-inf')
+        bestScore = -100000
         bestMove = None
         for move in board.legal_moves:
             board.push(move)
