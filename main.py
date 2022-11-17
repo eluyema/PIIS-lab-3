@@ -1,7 +1,7 @@
 import chess
 from game import Game
 
-print('Hello there! Choose one of available search algorithm\n - negomax\n')
+print('Hello there! Choose one of available search algorithm\n - negamax\n - negascout\n - pvs\n')
 
 method = input("Enter algorithm name: ")
 

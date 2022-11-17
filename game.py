@@ -1,26 +1,10 @@
 import chess
-
-def evaluate(board: chess.Board):
-    return -9999
-
-def Negamax(board, depth):
-    finalScore = float('-inf')
-
-    if depth == 0:
-        return evaluate(board)
-
-    for move in board.legal_moves:
-        board.push(move)
-        nextScore = -Negamax(board, depth-1)
-        board.pop()
-        if finalScore > nextScore:
-            finalScore = nextScore
-    return finalScore 
+from algorithm import Negamax, Negascout, PVS
 
 class Game:
     def __init__(self, board: chess.Board, method):
         self.board = board
-        self.basicDepth = 3
+        self.basicDepth = 4
         self.method = method
     
     def _moveUser(self):
@@ -30,21 +14,19 @@ class Game:
     
     def _moveComputer(self):
         bestMove = chess.Move.null
-        bestScore = float('-inf')
-        for move in self.board.legal_moves:
-            self.board.push(move)
-            if self.method == 'negomax':
-                score = Negamax(self.board, self.basicDepth)
-            else:
-                move = Negamax(self.board, self.basicDepth)
-            self.board.pop()
 
-            if score > bestScore:
-                bestScore = score
-                bestMove = move
+        if self.method == 'negamax':
+            bestMove = Negamax(self.board, self.basicDepth)[1]
+        elif self.method == 'negascout':
+            bestMove = Negascout(self.board,self.basicDepth, -1000000,1000000)[1]
+        elif self.method == 'pvs':
+            bestMove = PVS(self.board,self.basicDepth, -1000000,1000000)[1]
+        else:
+            bestMove = Negamax(self.board, self.basicDepth)[1]
 
         print('Best move is: ', bestMove)
         self.board.push(bestMove)
+
         return
 
     def start(self):
@@ -60,7 +42,7 @@ class Game:
                 self._moveComputer()
                 currentTurn = chess.WHITE
         print(self.board)
-        if(currentTurn == chess.BLACK):
-            print('Computer won! :( ')
+        if(currentTurn == chess.WHITE):
+            print('\n\nComputer won! :( ')
         if(currentTurn == chess.BLACK):
             print('You won! :D ')
